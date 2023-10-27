@@ -74,7 +74,7 @@ public class IssuedBookController {
 	                List<IssuedBookDto> iBookDtos = iBookService.findAllIssued(year, month,status);
 	                responses = iBookMapper.mapToResponse(iBookDtos); 
 	            } catch (NumberFormatException e) {
-	                System.out.println("Invalid year or month format.");
+	                throw new AppException("Invalid year or month format.");
 	            }
 	        } else {
 	            throw new AppException("Invalid input format. Expected yyyy-MM.");

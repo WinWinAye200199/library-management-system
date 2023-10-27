@@ -43,7 +43,7 @@ public class BookServiceImpl implements BookService {
 	private final CopiedBookService copiedBookService;
 
 	@Override
-	public BookWithCopiedBookInfoResponse createBook(BookDto bookDto) {
+	public List<CopiedBookDto> createBook(BookDto bookDto) {
 
 		Book book = new Book();
 		book.setTitle(bookDto.getTitle());
@@ -58,20 +58,19 @@ public class BookServiceImpl implements BookService {
 
 		List<CopiedBookDto> copiedBookDto = copiedBookService.createCopiedBook(bookSaved.getId(), totalbooks);
 
-		BookWithCopiedBookInfoResponse response = new BookWithCopiedBookInfoResponse();
-//		response.setBookResponse(bookMapper.map(bookSaved));
-		response.setCopiedBooks(copiedBookMapper.mapToResponse(copiedBookDto));
-		ApiResponse apiResponse = new ApiResponse(true,"Book Created Successfully!");
-		response.setApiResponse(apiResponse);
+//		BookWithCopiedBookInfoResponse response = new BookWithCopiedBookInfoResponse();
+//
+//		response.setCopiedBooks(copiedBookMapper.mapToResponse(copiedBookDto));
+//		
 
-		return response;
+		return copiedBookDto;
 
 	}
 
 	public List<BookDto> findByTitle(String title) {
 
 		List<Book> books = bookRepository.findByTitle(title);
-		if(books == null) {
+		if (books == null) {
 			throw new NotFoundException("Book does not exist with this Title!");
 		}
 		List<BookDto> bookDtos = bookMapper.maptoDto(books);
@@ -126,103 +125,41 @@ public class BookServiceImpl implements BookService {
 
 				int totalUpdated = totalBooks - totalChanged;
 				for (int i = 1; i <= totalUpdated; i++) {
-					if (count < 10) {
-						String generatedCopiedId = id + "B00" + count;
 
-						CopiedBook cBook = new CopiedBook();
-						cBook.setGeneratedId(generatedCopiedId);
-						cBook.setDamaged(false);
-						cBook.setBook(book);
+					String generatedCopiedId = id + "B" + count + "C";
 
-						CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
+					CopiedBook cBook = new CopiedBook();
+					cBook.setGeneratedId(generatedCopiedId);
+					cBook.setDamaged(false);
+					cBook.setBook(book);
 
-						CopiedBookDto cBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
+					CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
 
-						CopiedBookResponse copiedBookResponse = copiedBookMapper.mapToResponse(cBookDto);
-						copiedBooksInfo.add(copiedBookResponse);
-						count++;
-					} else if (count >= 10) {
-						String generatedCopiedId = id + "B0" + count;
+					CopiedBookDto cBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
 
-						CopiedBook cBook = new CopiedBook();
-						cBook.setGeneratedId(generatedCopiedId);
-						cBook.setDamaged(false);
-						cBook.setBook(book);
-
-						CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
-
-						CopiedBookDto cBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
-
-						CopiedBookResponse copiedBookResponse = copiedBookMapper.mapToResponse(cBookDto);
-						copiedBooksInfo.add(copiedBookResponse);
-						count++;
-					} else if (count >= 100) {
-						String generatedCopiedId = id + "B" + count;
-
-						CopiedBook cBook = new CopiedBook();
-						cBook.setGeneratedId(generatedCopiedId);
-						cBook.setDamaged(false);
-						cBook.setBook(book);
-
-						CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
-
-						CopiedBookDto cBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
-
-						CopiedBookResponse copiedBookResponse = copiedBookMapper.mapToResponse(cBookDto);
-						copiedBooksInfo.add(copiedBookResponse);
-						count++;
-					}
+					CopiedBookResponse copiedBookResponse = copiedBookMapper.mapToResponse(cBookDto);
+					copiedBooksInfo.add(copiedBookResponse);
+					count++;
 
 				}
 				bookRepository.save(book);
 			} else {
 				for (int i = 1; i <= totalBooks; i++) {
-					if (count < 10) {
-						String generatedCopiedId = id + "B00" + count;
 
-						CopiedBook cBook = new CopiedBook();
-						cBook.setGeneratedId(generatedCopiedId);
-						cBook.setDamaged(false);
-						cBook.setBook(book);
+					String generatedCopiedId = id + "B" + count + "C";
 
-						CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
+					CopiedBook cBook = new CopiedBook();
+					cBook.setGeneratedId(generatedCopiedId);
+					cBook.setDamaged(false);
+					cBook.setBook(book);
 
-						CopiedBookDto cBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
+					CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
 
-						CopiedBookResponse copiedBookResponse = copiedBookMapper.mapToResponse(cBookDto);
-						copiedBooksInfo.add(copiedBookResponse);
-						count++;
-					} else if (count >= 10) {
-						String generatedCopiedId = id + "B0" + count;
+					CopiedBookDto cBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
 
-						CopiedBook cBook = new CopiedBook();
-						cBook.setGeneratedId(generatedCopiedId);
-						cBook.setDamaged(false);
-						cBook.setBook(book);
-
-						CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
-
-						CopiedBookDto cBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
-
-						CopiedBookResponse copiedBookResponse = copiedBookMapper.mapToResponse(cBookDto);
-						copiedBooksInfo.add(copiedBookResponse);
-						count++;
-					} else if (count >= 100) {
-						String generatedCopiedId = id + "B" + count;
-
-						CopiedBook cBook = new CopiedBook();
-						cBook.setGeneratedId(generatedCopiedId);
-						cBook.setDamaged(false);
-						cBook.setBook(book);
-
-						CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
-
-						CopiedBookDto cBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
-
-						CopiedBookResponse copiedBookResponse = copiedBookMapper.mapToResponse(cBookDto);
-						copiedBooksInfo.add(copiedBookResponse);
-						count++;
-					}
+					CopiedBookResponse copiedBookResponse = copiedBookMapper.mapToResponse(cBookDto);
+					copiedBooksInfo.add(copiedBookResponse);
+					count++;
 
 				}
 			}
@@ -249,13 +186,9 @@ public class BookServiceImpl implements BookService {
 
 		BookDto bookDto = bookMapper.map(book);
 		bookMapper.map(bookDto);
-		ApiResponse apiResponse = new ApiResponse();
-		apiResponse.setMessage("Successful!");
-		apiResponse.setSuccess(true);
+
 		BookWithCopiedBookInfoResponse response = new BookWithCopiedBookInfoResponse();
-//		response.setBookResponse(bookResponse);
 		response.setCopiedBooks(copiedBooksInfo);
-		response.setApiResponse(apiResponse);
 
 		return response;
 	}
@@ -295,51 +228,48 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public ApiResponse deletedBook(long id) {
-	    try {
-	        Book book = bookRepository.findById(id)
-	                .orElseThrow(() -> new NotFoundException("Book does not exist with this bookId: " + id));
-	        
-	        System.out.println("Book ID: " + book.getId());
+		try {
+			Book book = bookRepository.findById(id)
+					.orElseThrow(() -> new NotFoundException("Book does not exist with this bookId: " + id));
 
-	        if (book.getTotalBooks() == book.getDamagedBooks() || book.getTotalBooks() == book.getLeftoverBooks()) {
-	            List<CopiedBook> cBooks = copiedBookRepository.findByBookId(book.getId());
+			if (book.getTotalBooks() == book.getDamagedBooks() || book.getTotalBooks() == book.getLeftoverBooks()) {
+				List<CopiedBook> cBooks = copiedBookRepository.findByBookId(book.getId());
 
-	            boolean hasIssuedBooks = false;
+				boolean hasIssuedBooks = false;
 
-	            for (CopiedBook cBook : cBooks) {
-	                System.out.println("Copied Book ID: " + cBook.getId());
-	                IssuedBook iBook = iBookRepository.findByCopiedBookId(cBook.getId());
-	                if (iBook != null) {
-	                    hasIssuedBooks = true;
-	                    break; // No need to continue checking if an issued book is found
-	                }
-	            }
+				for (CopiedBook cBook : cBooks) {
+					System.out.println("Copied Book ID: " + cBook.getId());
+					IssuedBook iBook = iBookRepository.findByCopiedBookId(cBook.getId());
+					if (iBook != null) {
+						hasIssuedBooks = true;
+						break; // No need to continue checking if an issued book is found
+					}
+				}
 
-	            if (!hasIssuedBooks) {
-	                bookRepository.delete(book);
-	                return new ApiResponse(true, "Book Deleted Successfully!");
-	            } else {
-	                throw new BadRequestException("Fail to Delete! Book has Issued Lists History.");
-	            }
-	        } else {
-	            throw new BadRequestException("Fail to Delete. Book is issued by Members!");
-	        }
-	    } catch (Exception e) {
-	        // Handle exceptions, log them, and return an appropriate response
-	        throw new BadRequestException("Fail to Delete!Book has Issued Lists History.");
-	    }
+				if (!hasIssuedBooks) {
+					bookRepository.delete(book);
+					return new ApiResponse(true, "Book Deleted Successfully!");
+				} else {
+					throw new BadRequestException("Fail to Delete! Book has Issued Lists History.");
+				}
+			} else {
+				throw new BadRequestException("Fail to Delete. Book is issued by Members!");
+			}
+		} catch (Exception e) {
+
+			throw new BadRequestException("Fail to Delete!Book has Issued Lists History.");
+		}
 	}
 
 	@Override
 	public ApiResponse updatedBookTitle(long id, String title) {
 
 		List<Book> books = bookRepository.findAll(id);
-		List<Book> filterLists = books.stream()
-				.filter(b -> b.getTitle().equals(title)).collect(Collectors.toList());
-		if(filterLists.size() > 0) {
+		List<Book> filterLists = books.stream().filter(b -> b.getTitle().equals(title)).collect(Collectors.toList());
+		if (filterLists.size() > 0) {
 			throw new BadRequestException("Duplicated Book Title!");
 		}
-		
+
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("Book does not exist with this bookId :" + id));
 		book.setTitle(title);

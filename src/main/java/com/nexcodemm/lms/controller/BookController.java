@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexcodemm.lms.mapper.BookMapper;
+import com.nexcodemm.lms.mapper.CopiedBookMapper;
 import com.nexcodemm.lms.model.dto.BookDto;
+import com.nexcodemm.lms.model.dto.CopiedBookDto;
 import com.nexcodemm.lms.model.excepiton.BadRequestException;
 import com.nexcodemm.lms.model.request.BookRequest;
 import com.nexcodemm.lms.model.request.BookTitleRequest;
@@ -22,6 +24,7 @@ import com.nexcodemm.lms.model.request.ChangedAmountRequest;
 import com.nexcodemm.lms.model.response.ApiResponse;
 import com.nexcodemm.lms.model.response.BookResponse;
 import com.nexcodemm.lms.model.response.BookWithCopiedBookInfoResponse;
+import com.nexcodemm.lms.model.response.CopiedBookResponse;
 import com.nexcodemm.lms.service.BookService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,8 @@ public class BookController {
 	private final BookService bookService;
 
 	private final BookMapper bookMapper;
+	
+	private final CopiedBookMapper copiedBookMapper;
 
 	@PostMapping
 	public ResponseEntity<?> createBook(@RequestBody BookRequest request) {
@@ -48,11 +53,8 @@ public class BookController {
 		BookDto bookDto = new BookDto();
 		bookDto.setTitle(request.getTitle());
 		bookDto.setTotalBooks(request.getTotalBooks());
-		BookWithCopiedBookInfoResponse response = bookService.createBook(bookDto);
-		ApiResponse apiResponse = new ApiResponse();
-		apiResponse.setMessage("Successful!");
-		apiResponse.setSuccess(true);
-		response.setApiResponse(apiResponse);
+		List<CopiedBookDto> copiedBookDto = bookService.createBook(bookDto);
+		List<CopiedBookResponse> response = copiedBookMapper.mapToResponse(copiedBookDto);
 
 		return ResponseEntity.ok(response);
 
@@ -70,12 +72,11 @@ public class BookController {
 		return responses;
 	}
 
-	@PutMapping("/book-amount")
-	public BookWithCopiedBookInfoResponse updatedBookAmount(@RequestBody ChangedAmountRequest request) {
+	@PutMapping("/book-amount/{id}")
+	public BookWithCopiedBookInfoResponse updatedBookAmount(@PathVariable("id") long id, @RequestBody ChangedAmountRequest request) {
 		try {
 			int totalBooks = request.getTotalBooks();
-			long bookId = request.getId();
-			BookWithCopiedBookInfoResponse response = bookService.updatedBook(bookId, totalBooks);
+			BookWithCopiedBookInfoResponse response = bookService.updatedBook(id, totalBooks);
 			return response;
 		} catch (BadRequestException e) {
 			throw new BadRequestException(e.getMessage());
@@ -83,12 +84,11 @@ public class BookController {
 
 	}
 
-	@PutMapping("/book-title")
-	public ApiResponse updatedBookTitle(@RequestBody BookTitleRequest request) {
+	@PutMapping("/book-title/{id}")
+	public ApiResponse updatedBookTitle(@PathVariable("id")long id, @RequestBody BookTitleRequest request) {
 		String title = request.getTitle();
-		long bookId = request.getId();
-		
-		ApiResponse response = bookService.updatedBookTitle(bookId, title);
+
+		ApiResponse response = bookService.updatedBookTitle(id, title);
 
 		return response;
 	}

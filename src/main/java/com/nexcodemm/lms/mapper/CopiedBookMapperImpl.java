@@ -43,6 +43,7 @@ public class CopiedBookMapperImpl implements CopiedBookMapper {
 
 		CopiedBookDto cBookDto = new CopiedBookDto();
 		cBookDto.setBookId(cBook.getBook().getId());
+		cBookDto.setIssued(cBook.isIssued());
 		cBookDto.setId(cBook.getId());
 		cBookDto.setGeneratedId(cBook.getGeneratedId());
 		cBookDto.setDamaged(cBook.isDamaged());
@@ -63,12 +64,13 @@ public class CopiedBookMapperImpl implements CopiedBookMapper {
 		List<CopiedBookDto> cBookDtos = new ArrayList<>();
 		for (CopiedBook cBook : cBooks) {
 			CopiedBookDto cBookDto = new CopiedBookDto();
-			cBookDto.setGeneratedId(cBook.getGeneratedId());
-			cBookDto.setIssued(cBook.isIssued());
-			cBookDto.setDamaged(cBook.isDamaged());
-			Book bookEntity = cBook.getBook();
-			BookDto bookDto = bookMapper.map(bookEntity);
-			cBookDto.setBookDto(bookDto);
+			cBookDto = mapToDto(cBook);
+//			cBookDto.setGeneratedId(cBook.getGeneratedId());
+//			cBookDto.setIssued(cBook.isIssued());
+//			cBookDto.setDamaged(cBook.isDamaged());
+//			Book bookEntity = cBook.getBook();
+//			BookDto bookDto = bookMapper.map(bookEntity);
+//			cBookDto.setBookDto(bookDto);
 			cBookDtos.add(cBookDto);
 		}
 		return cBookDtos;
@@ -85,10 +87,11 @@ public class CopiedBookMapperImpl implements CopiedBookMapper {
 		for (CopiedBookDto cBookDto : cBookDtos) {
 
 			CopiedBookResponse response = new CopiedBookResponse();
-			response.setIssued(cBookDto.isIssued());
-			response.setGeneratedId(cBookDto.getGeneratedId());
-			response.setDamaged(cBookDto.isDamaged());
-			response.setTitle(cBookDto.getBookDto().getTitle());
+			response = mapToResponse(cBookDto);
+//			response.setIssued(cBookDto.isIssued());
+//			response.setGeneratedId(cBookDto.getGeneratedId());
+//			response.setDamaged(cBookDto.isDamaged());
+//			response.setTitle(cBookDto.getBookDto().getTitle());
 
 			responses.add(response);
 		}

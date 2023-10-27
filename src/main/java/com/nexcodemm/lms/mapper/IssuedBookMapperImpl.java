@@ -63,7 +63,6 @@ public class IssuedBookMapperImpl implements IssuedBookMapper {
 
 		IssuedBookDto iBookDto = new IssuedBookDto();
 		iBookDto.setId(iBook.getId());
-		iBookDto.setChecked(iBook.isChecked());
 		CopiedBookDto copiedBookDto = copiedBookMapper.mapToDto(iBook.getCopiedBook());
 		iBookDto.setCopiedBookDto(copiedBookDto);
 		iBookDto.setTitle(copiedBookDto.getBookDto().getTitle()); 
@@ -108,18 +107,18 @@ public class IssuedBookMapperImpl implements IssuedBookMapper {
 		List<IssuedBookDto> iBookDtos = new ArrayList<>();
 		for (IssuedBook iBook : iBooks) {
 			IssuedBookDto iBookDto = new IssuedBookDto();
-			iBookDto.setId(iBook.getId());
-			iBookDto.setChecked(iBook.isChecked());
-			CopiedBookDto copiedBookDto = copiedBookMapper.mapToDto(iBook.getCopiedBook());
-			iBookDto.setCopiedBookDto(copiedBookDto);
-			iBookDto.setDueDate(iBook.getDueDate());
-			iBookDto.setExtensionTimes(iBook.getExtensionTimes());
-			iBookDto.setIssued(iBook.isIssued());
-			iBookDto.setTitle(copiedBookDto.getBookDto().getTitle()); 
-			iBookDto.setIssuedDate(iBook.getIssuedDate());
-			iBookDto.setChecked(iBook.isChecked());
-			MemberDto memberDto = memberMapper.mapToDto(iBook.getMember());
-			iBookDto.setMemberDto(memberDto);
+			iBookDto = mapToDto(iBook);
+//			iBookDto.setId(iBook.getId());
+//			CopiedBookDto copiedBookDto = copiedBookMapper.mapToDto(iBook.getCopiedBook());
+//			iBookDto.setCopiedBookDto(copiedBookDto);
+//			iBookDto.setDueDate(iBook.getDueDate());
+//			iBookDto.setExtensionTimes(iBook.getExtensionTimes());
+//			iBookDto.setIssued(iBook.isIssued());
+//			iBookDto.setTitle(copiedBookDto.getBookDto().getTitle()); 
+//			iBookDto.setIssuedDate(iBook.getIssuedDate());
+//			iBookDto.setChecked(iBook.isChecked());
+//			MemberDto memberDto = memberMapper.mapToDto(iBook.getMember());
+//			iBookDto.setMemberDto(memberDto);
 			iBookDtos.add(iBookDto);
 		}
 		return iBookDtos;

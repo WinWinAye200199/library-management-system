@@ -10,6 +10,5 @@ import lombok.Setter;
 @NotBlank
 public class BookTitleRequest {
 
-	private long id;
 	private String title;
 }

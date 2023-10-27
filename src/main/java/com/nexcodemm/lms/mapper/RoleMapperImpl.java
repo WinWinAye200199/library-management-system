@@ -33,8 +33,9 @@ public class RoleMapperImpl implements RoleMapper{
 		List<RoleDto> roleDtos =new ArrayList<>();
 		for(Role role:roles) {
 			RoleDto roleDto = new RoleDto();
-			roleDto.setId(role.getId());
-			roleDto.setName(role.getName());
+			roleDto = map(role);
+//			roleDto.setId(role.getId());
+//			roleDto.setName(role.getName());
 			roleDtos.add(roleDto);
 		}
 		return roleDtos;
@@ -48,10 +49,11 @@ public class RoleMapperImpl implements RoleMapper{
 		
 		List<RoleResponse> responses = new ArrayList<>();
 		
-		for(RoleDto dto:roleDtos) {
+		for(RoleDto roleDto : roleDtos) {
 			RoleResponse response = new RoleResponse();
-			response.setId(dto.getId());
-			response.setName(dto.getName());
+			response = toResponse(roleDto);
+//			response.setId(dto.getId());
+//			response.setName(dto.getName());
 			
 			responses.add(response);
 		}

@@ -245,9 +245,9 @@ public class IssuedBookServiceImpl implements IssuedBookService {
 	}
 
 	@Override
-	@Scheduled(fixedRate = 60 * 1000 * 24 * 60) // 24 hours 60 * 1000
+	@Scheduled(cron = "0 0 0 * * ?") // Runs daily at 12:00 AM
 	public ApiResponse resetCheckedFlag() {
-		LocalDate currentDate = LocalDate.now(); // Subtract 1 day to represent 24 hours ago
+		LocalDate currentDate = LocalDate.now(); 
 
 		List<IssuedBook> checkedBooks = issuedBookRepository.findCheckedBooksToReset(currentDate);
 

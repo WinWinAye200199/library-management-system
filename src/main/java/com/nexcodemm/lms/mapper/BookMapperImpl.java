@@ -29,13 +29,13 @@ public class BookMapperImpl implements BookMapper{
 		List<BookDto> bookDtos = new ArrayList<>();
 		for(Book book : books) {
 			BookDto bookDto = new BookDto();
-			//bookDto = map(book);
-			bookDto.setId(book.getId());
-			bookDto.setTitle(book.getTitle());
-			bookDto.setDamagedBooks(book.getDamagedBooks());
-			bookDto.setLeftoverBooks(book.getLeftoverBooks());
-			bookDto.setTotalIssuedBooks(book.getTotalIssuedBooks());
-			bookDto.setTotalBooks(book.getTotalBooks());
+			bookDto = map(book);
+//			bookDto.setId(book.getId());
+//			bookDto.setTitle(book.getTitle());
+//			bookDto.setDamagedBooks(book.getDamagedBooks());
+//			bookDto.setLeftoverBooks(book.getLeftoverBooks());
+//			bookDto.setTotalIssuedBooks(book.getTotalIssuedBooks());
+//			bookDto.setTotalBooks(book.getTotalBooks());
 			bookDtos.add(bookDto);
 		}
 		return bookDtos;
@@ -58,12 +58,13 @@ public class BookMapperImpl implements BookMapper{
 		List<BookResponse> responses = new ArrayList<>();
 		for(BookDto bookDto : bookDtos) {
 			BookResponse response = new BookResponse();
-			response.setId(bookDto.getId());
-			response.setTitle(bookDto.getTitle());
-			response.setDamagedBooks(bookDto.getDamagedBooks());
-			response.setLeftoverBooks(bookDto.getLeftoverBooks());
-			response.setTotalBooks(bookDto.getTotalBooks());
-			response.setTotalIssuedBooks(bookDto.getTotalIssuedBooks());
+			response = map(bookDto);
+//			response.setId(bookDto.getId());
+//			response.setTitle(bookDto.getTitle());
+//			response.setDamagedBooks(bookDto.getDamagedBooks());
+//			response.setLeftoverBooks(bookDto.getLeftoverBooks());
+//			response.setTotalBooks(bookDto.getTotalBooks());
+//			response.setTotalIssuedBooks(bookDto.getTotalIssuedBooks());
 			responses.add(response);
 		}
 				

@@ -10,6 +10,5 @@ import lombok.Setter;
 @NotBlank
 public class ChangedAmountRequest {
 
-	private long id;
 	private int totalBooks;
 }

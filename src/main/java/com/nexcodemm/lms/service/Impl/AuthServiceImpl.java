@@ -37,9 +37,9 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public JwtResponse authenticate(LoginRequest loginRequest) {
-		try {
-			Date expiredAt = new Date((new Date()).getTime() + 86400 * 1000);
 
+		Date expiredAt = new Date((new Date()).getTime() + 86400 * 1000);
+		try {
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -47,12 +47,12 @@ public class AuthServiceImpl implements AuthService {
 				String jwtToken = jwtService.createToken(authentication);
 				return new JwtResponse("Bearer", jwtToken, expiredAt.toInstant().toString());
 			} else {
-				throw new UnauthorizedException("Username or Password is wrong!");
+				throw new NotFoundException("Username or Password is wrong!");
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			throw new UnauthorizedException("Username or Password is wrong!");
 		}
-		
+
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
 		} else {
 
 //				return new ApiResponse(false,"Wrong Old Password!");
-			throw new BadRequestException("Wrong Old Password!");
+			throw new BadRequestException("Wrong Password!");
 		}
 
 	}

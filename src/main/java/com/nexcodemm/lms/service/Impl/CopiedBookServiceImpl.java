@@ -77,7 +77,11 @@ public class CopiedBookServiceImpl implements CopiedBookService {
 		for (String generatedId : generatedIds) {
 			CopiedBook cBook = copiedBookRepository.findByGeneratedId(generatedId);
 
-			if (cBook.isDamaged() == false && cBook.isIssued() == false) {
+			if (cBook.isDamaged() == true && cBook.isIssued() == true) {
+
+				throw new BadRequestException("Some Books are in issued!");
+
+			} else {
 
 				cBook.setDamaged(true);
 				Book book = bookRepository.findById(cBook.getBook().getId())
@@ -89,16 +93,6 @@ public class CopiedBookServiceImpl implements CopiedBookService {
 				response.setMessage("Books added to Damaged List Successfully!");
 				response.setSuccess(true);
 
-			} else {
-
-//				cBook.setDamaged(false);
-//				Book book = bookRepository.findById(cBook.getBook().getId()).
-//						orElseThrow(()->new NotFoundException("Book does not exist with this ID"));
-//				book.setDamagedBooks(cBook.getBook().getDamagedBooks() - 1);
-//				book.setLeftoverBooks(cBook.getBook().getLeftoverBooks() + 1);
-//				copiedBookRepository.save(cBook);
-//				bookRepository.save(book);
-				throw new BadRequestException("Some Books are in issued!");
 			}
 
 		}
@@ -113,36 +107,16 @@ public class CopiedBookServiceImpl implements CopiedBookService {
 				.orElseThrow(() -> new NotFoundException("Book does not exist with this ID"));
 		List<CopiedBookDto> copiedBooksInfo = new ArrayList<>();
 		for (int i = 1; i <= totalBooks; i++) {
-			if (i < 10) {
-				String generatedCopiedId = bookId + "B00" + i;
-				CopiedBook cBook = new CopiedBook();
-				cBook.setGeneratedId(generatedCopiedId);
-				cBook.setDamaged(false);
-				cBook.setBook(book);
-				CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
-				CopiedBookDto copiedBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
 
-				copiedBooksInfo.add(copiedBookDto);
+			String generatedCopiedId = bookId + "B" + i + "C";
+			CopiedBook cBook = new CopiedBook();
+			cBook.setGeneratedId(generatedCopiedId);
+			cBook.setDamaged(false);
+			cBook.setBook(book);
+			CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
+			CopiedBookDto copiedBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
 
-			} else if (i >= 10) {
-				String generatedCopiedId = bookId + "B0" + i;
-				CopiedBook cBook = new CopiedBook();
-				cBook.setGeneratedId(generatedCopiedId);
-				cBook.setDamaged(false);
-				cBook.setBook(book);
-				CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
-				CopiedBookDto copiedBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
-				copiedBooksInfo.add(copiedBookDto);
-			} else if (i >= 100) {
-				String generatedCopiedId = bookId + "B" + i;
-				CopiedBook cBook = new CopiedBook();
-				cBook.setGeneratedId(generatedCopiedId);
-				cBook.setDamaged(false);
-				cBook.setBook(book);
-				CopiedBook savedCopiedBook = copiedBookRepository.save(cBook);
-				CopiedBookDto copiedBookDto = copiedBookMapper.mapToDto(savedCopiedBook);
-				copiedBooksInfo.add(copiedBookDto);
-			}
+			copiedBooksInfo.add(copiedBookDto);
 
 		}
 

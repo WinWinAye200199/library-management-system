@@ -55,11 +55,12 @@ public class MemberMapperImpl implements MemberMapper{
 		for(Member member : members) {
 			
 			MemberDto memberDto = new MemberDto();
-			memberDto.setId(member.getId());
-			memberDto.setName(member.getName());
-			memberDto.setPhone(member.getPhone());
-			memberDto.setAddress(member.getAddress());
-			memberDto.setTotalIssued(member.getTotalIssued());
+			memberDto = mapToDto(member);
+//			memberDto.setId(member.getId());
+//			memberDto.setName(member.getName());
+//			memberDto.setPhone(member.getPhone());
+//			memberDto.setAddress(member.getAddress());
+//			memberDto.setTotalIssued(member.getTotalIssued());
 			memberDtos.add(memberDto);
 			
 		}
@@ -73,11 +74,12 @@ public class MemberMapperImpl implements MemberMapper{
 		for(MemberDto memberDto : memberDtos) {
 			
 			MemberResponse response = new MemberResponse();
-			response.setId(memberDto.getId());
-			response.setName(memberDto.getName());
-			response.setPhone(memberDto.getPhone());
-			response.setAddress(memberDto.getAddress());
-			response.setTotalIssued(memberDto.getTotalIssued());
+			response = mapToResponse(memberDto);
+//			response.setId(memberDto.getId());
+//			response.setName(memberDto.getName());
+//			response.setPhone(memberDto.getPhone());
+//			response.setAddress(memberDto.getAddress());
+//			response.setTotalIssued(memberDto.getTotalIssued());
 			responses.add(response);
 		}
 		return responses;

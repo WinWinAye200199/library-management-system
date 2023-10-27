@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 public class BookWithCopiedBookInfoResponse {
 
-	//private BookResponse bookResponse;
 	private List<CopiedBookResponse> copiedBooks;
-	private ApiResponse apiResponse;
+
 }
