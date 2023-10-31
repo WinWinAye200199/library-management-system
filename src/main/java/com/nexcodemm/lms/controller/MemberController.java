@@ -68,8 +68,8 @@ public class MemberController {
 		return responses;
 	}
 
-	@GetMapping("/searchByPhone/{phone}")
-	public MemberResponse searchMember(@PathVariable("phone") String phone) {
+	@GetMapping("/searchByPhone")
+	public MemberResponse searchMember(@RequestParam("phone") String phone) {
 
 		MemberDto memberDto = memberService.findByPhone(phone);
 		MemberResponse response = memberMapper.mapToResponse(memberDto);

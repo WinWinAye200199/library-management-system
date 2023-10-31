@@ -102,16 +102,16 @@ public class MemberServiceImpl implements MemberService {
 		Member foundMember = memberRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("Member not found with this MemberId"));
 		List<IssuedBook> iBooks = issuedBookRepository.findByMemberId(foundMember.getId());
-		if (foundMember.getTotalIssued() == 0 && iBooks == null) {
-			memberRepository.delete(foundMember);
-			return new ApiResponse(true, "Member Deleted Successfully!");
+		if (foundMember.getTotalIssued() > 0 && iBooks != null) {
+			throw new BadRequestException("Can not Delete!Member has Issued History.");
 
 		} else if (foundMember.getTotalIssued() > 0) {
 			throw new BadRequestException("Can not Delete!");
 
 		} else {
-
-			throw new BadRequestException("Can not Delete!Member has Issued History.");
+			memberRepository.delete(foundMember);
+			return new ApiResponse(true, "Member Deleted Successfully!");
+			
 		}
 
 	}

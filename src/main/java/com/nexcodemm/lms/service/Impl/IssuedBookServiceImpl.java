@@ -245,7 +245,7 @@ public class IssuedBookServiceImpl implements IssuedBookService {
 	}
 
 	@Override
-	@Scheduled(cron = "0 0 0 * * ?") // Runs daily at 12:00 AM
+	@Scheduled(cron = "0 0 12 * * ?") // Runs daily at 12:00 PM
 	public ApiResponse resetCheckedFlag() {
 		LocalDate currentDate = LocalDate.now(); 
 
